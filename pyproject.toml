@@ -1,0 +1,21 @@
+[tool.poetry]
+package-mode = false
+
+[project]
+name = "klokku-home-assistant-integration"
+version = "0.1.0"
+description = "Home Assistant integration for Klokku"
+authors = [
+    {name = "Mariusz Józala"}
+]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.13.2,<3.14"
+dependencies = [
+    "homeassistant (>=2025.3.4)",
+    "klokku-python-client (==0.1.0)"
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

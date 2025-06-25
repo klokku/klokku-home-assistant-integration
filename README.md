@@ -1,0 +1,1 @@
+# Klokku Home Assistant integration
