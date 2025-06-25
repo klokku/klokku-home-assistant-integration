@@ -1,0 +1,28 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Urządzenie jest już skonfigurowane"
+    },
+    "error": {
+      "cannot_connect": "Nie udało się połączyć",
+      "invalid_auth": "Nieprawidłowe uwierzytelnienie",
+      "unknown": "Nieoczekiwany błąd"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "url": "URL",
+          "username": "Nazwa użytkownika"
+        },
+        "description": "Wprowadź dane serwera Klokku"
+      }
+    }
+  },
+  "entity": {
+    "select": {
+      "budget": {
+        "name": "Aktualny budżet"
+      }
+    }
+  }
+}

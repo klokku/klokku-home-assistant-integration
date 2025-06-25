@@ -1,0 +1,28 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Enheten är redan konfigurerad"
+    },
+    "error": {
+      "cannot_connect": "Anslutningen misslyckades",
+      "invalid_auth": "Ogiltig autentisering",
+      "unknown": "Oväntat fel"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "url": "URL",
+          "username": "Användarnamn"
+        },
+        "description": "Ange dina Klokku-serveruppgifter"
+      }
+    }
+  },
+  "entity": {
+    "select": {
+      "budget": {
+        "name": "Aktuell budget"
+      }
+    }
+  }
+}

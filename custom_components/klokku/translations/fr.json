@@ -1,0 +1,28 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "L'appareil est déjà configuré"
+    },
+    "error": {
+      "cannot_connect": "Échec de connexion",
+      "invalid_auth": "Authentification invalide",
+      "unknown": "Erreur inattendue"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "url": "URL",
+          "username": "Nom d'utilisateur"
+        },
+        "description": "Entrez les détails de votre serveur Klokku"
+      }
+    }
+  },
+  "entity": {
+    "select": {
+      "budget": {
+        "name": "Budget actuel"
+      }
+    }
+  }
+}
