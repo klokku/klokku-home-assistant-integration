@@ -1,6 +1,5 @@
 {
   "domain": "klokku",
-  "version": "0.1.0",
   "name": "Klokku",
   "codeowners": [
     "@klokku", "@jozala"
@@ -8,9 +7,10 @@
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/klokku/klokku-home-assistant-integration",
-  "issue_tracker": "https://github.com/klokku/klokku-home-assistant-integration/issues",
   "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/klokku/klokku-home-assistant-integration/issues",
   "requirements": ["klokku-python-client==0.1.0"],
   "ssdp": [],
+  "version": "0.1.0",
   "zeroconf": []
 }
