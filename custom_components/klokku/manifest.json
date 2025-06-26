@@ -11,6 +11,6 @@
   "issue_tracker": "https://github.com/klokku/klokku-home-assistant-integration/issues",
   "requirements": ["klokku-python-client==0.1.0"],
   "ssdp": [],
-  "version": "0.1.0",
+  "version": "0.1.1",
   "zeroconf": []
 }

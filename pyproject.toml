@@ -3,7 +3,7 @@ package-mode = false
 
 [project]
 name = "klokku-home-assistant-integration"
-version = "0.1.0"
+version = "0.1.1"
 description = "Home Assistant integration for Klokku"
 authors = [
     {name = "Mariusz Józala"}

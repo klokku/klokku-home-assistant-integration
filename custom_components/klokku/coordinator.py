@@ -10,6 +10,7 @@ from datetime import timedelta
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_URL, CONF_ID
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from klokku_python_client import KlokkuApi, Budget, Event
 
@@ -33,10 +34,12 @@ class KlokkuDataUpdateCoordinator(DataUpdateCoordinator[KlokkuData]):
 
     config_entry: KlokkuConfigEntry
 
-    def __init__(self, hass: HomeAssistant, *, config_entry: KlokkuConfigEntry) -> None:
+    def __init__(self, hass: HomeAssistant, *, config_entry: KlokkuConfigEntry, session=None) -> None:
         """Initialize Klokku data updater."""
 
         self.api = KlokkuApi(config_entry.data[CONF_URL])
+        # Inject Home Assistant's ClientSession into KlokkuApi
+        self.api.session = session or async_get_clientsession(hass)
         self.api.user_id = config_entry.data[CONF_ID]
 
         super().__init__(

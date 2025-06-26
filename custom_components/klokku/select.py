@@ -59,5 +59,5 @@ class BudgetSelect(CoordinatorEntity[KlokkuDataUpdateCoordinator], SelectEntity)
             return
 
         _LOGGER.debug("Budget ID: %s", budget_id)
-        self.coordinator.api.set_current_budget(budget_id)
+        await self.coordinator.api.set_current_budget(budget_id)
         await self.coordinator.async_request_refresh()

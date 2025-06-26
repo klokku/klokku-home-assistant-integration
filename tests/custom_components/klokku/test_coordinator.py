@@ -15,7 +15,9 @@ from custom_components.klokku.coordinator import KlokkuDataUpdateCoordinator, Kl
 @fixture
 def mock_hass():
     """Return a mocked HomeAssistant instance."""
-    return MagicMock(spec=HomeAssistant)
+    mock = MagicMock(spec=HomeAssistant)
+    mock.data = {'network': {}}
+    return mock
 
 
 @fixture
@@ -40,9 +42,14 @@ def mock_klokku_api():
 
 
 @fixture
-async def coordinator(mock_hass, mock_config_entry, mock_klokku_api):
+async def mock_session():
+    """Return a mocked ClientSession instance."""
+    return MagicMock()
+
+@fixture
+async def coordinator(mock_hass, mock_config_entry, mock_klokku_api, mock_session):
     """Return a KlokkuDataUpdateCoordinator instance."""
-    return KlokkuDataUpdateCoordinator(mock_hass, config_entry=mock_config_entry)
+    return KlokkuDataUpdateCoordinator(mock_hass, config_entry=mock_config_entry, session=mock_session)
 
 
 @pytest.mark.asyncio

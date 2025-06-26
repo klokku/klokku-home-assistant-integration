@@ -12,6 +12,7 @@ from homeassistant.const import CONF_USERNAME, CONF_URL, CONF_ID
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from klokku_python_client import KlokkuApi
 
 from .const import DOMAIN
@@ -38,6 +39,7 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
         raise CannotConnect
 
     api = KlokkuApi(data[CONF_URL])
+    api.session = async_get_clientsession(hass)
     authenticated = await api.authenticate(data[CONF_USERNAME])
     if not authenticated:
         raise InvalidAuth
