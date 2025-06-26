@@ -11,6 +11,7 @@ from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.const import CONF_USERNAME, CONF_URL, CONF_ID
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
+from homeassistant.helpers import config_validation as cv
 from klokku_python_client import KlokkuApi
 
 from .const import DOMAIN
@@ -24,35 +25,27 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
     }
 )
 
-# TODO cleanup
 async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str, Any]:
     """Validate the user input allows us to connect.
 
     Data has the keys from STEP_USER_DATA_SCHEMA with values provided by the user.
     """
-    # TODO validate the data can be used to set up a connection.
 
-    # If your PyPI package is not built with async, pass your methods
-    # to the executor:
-    # await hass.async_add_executor_job(
-    #     your_validate_func, data[CONF_USERNAME], data[CONF_PASSWORD]
-    # )
+    # Validate that the URL is properly formatted
+    try:
+        cv.url(data[CONF_URL])
+    except vol.Invalid:
+        raise CannotConnect
 
     api = KlokkuApi(data[CONF_URL])
     authenticated = await api.authenticate(data[CONF_USERNAME])
     if not authenticated:
         raise InvalidAuth
 
-    # If you cannot connect:
-    # throw CannotConnect
-    # If the authentication is wrong:
-    # InvalidAuth
-
-    # Return info that you want to store in the config entry.
     return {"title": f"Klokku - {data[CONF_USERNAME]}", CONF_URL: data[CONF_URL], CONF_ID: api.user_id}
 
 
-class ConfigFlow(ConfigFlow, domain=DOMAIN):
+class KlokkuConfigFlow(ConfigFlow, domain=DOMAIN):
     """Handle a config flow for Klokku."""
 
     VERSION = 1
