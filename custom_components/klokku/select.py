@@ -6,6 +6,7 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .coordinator import KlokkuConfigEntry
+from .const import DOMAIN
 import logging
 
 _LOGGER = logging.getLogger(__name__)
@@ -36,6 +37,7 @@ class BudgetSelect(CoordinatorEntity[KlokkuDataUpdateCoordinator], SelectEntity)
         super().__init__(coordinator)
         self._attr_has_entity_name = True
         self._attr_translation_key = "budget"
+        self._attr_unique_id = f"{DOMAIN}_budget_select_{coordinator.api.user_id}"
         self._attr_current_option = current_budget.name
         self._attr_options = [budget.name for budget in budgets]
 
