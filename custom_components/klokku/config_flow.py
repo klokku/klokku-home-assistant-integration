@@ -44,7 +44,7 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
     if not authenticated:
         raise InvalidAuth
 
-    return {"title": f"Klokku - {data[CONF_USERNAME]}", CONF_URL: data[CONF_URL], CONF_ID: api.user_id}
+    return {"title": f"Klokku - {data[CONF_USERNAME]}", CONF_URL: data[CONF_URL], CONF_ID: api.user_uid}
 
 
 class KlokkuConfigFlow(ConfigFlow, domain=DOMAIN):

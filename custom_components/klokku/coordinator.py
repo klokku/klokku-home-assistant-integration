@@ -40,7 +40,7 @@ class KlokkuDataUpdateCoordinator(DataUpdateCoordinator[KlokkuData]):
         self.api = KlokkuApi(config_entry.data[CONF_URL])
         # Inject Home Assistant's ClientSession into KlokkuApi
         self.api.session = session or async_get_clientsession(hass)
-        self.api.user_id = config_entry.data[CONF_ID]
+        self.api.user_uid = config_entry.data[CONF_ID]
 
         super().__init__(
             hass,
