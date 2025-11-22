@@ -8,8 +8,9 @@ from dataclasses import dataclass
 from datetime import timedelta
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_URL, CONF_ID
+from homeassistant.const import CONF_URL, CONF_ID, CONF_ACCESS_TOKEN, CONF_USERNAME
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from klokku_python_client import KlokkuApi, Budget, Event
@@ -38,9 +39,9 @@ class KlokkuDataUpdateCoordinator(DataUpdateCoordinator[KlokkuData]):
         """Initialize Klokku data updater."""
 
         self.api = KlokkuApi(config_entry.data[CONF_URL])
-        # Inject Home Assistant's ClientSession into KlokkuApi
+        # Authenticate with the API
         self.api.session = session or async_get_clientsession(hass)
-        self.api.user_uid = config_entry.data[CONF_ID]
+        self._auth_failed = False
 
         super().__init__(
             hass,
@@ -54,9 +55,23 @@ class KlokkuDataUpdateCoordinator(DataUpdateCoordinator[KlokkuData]):
         # Default to false on init so _async_update_data logic works
         self.last_update_success = False
 
+    async def async_initialize(self) -> None:
+        """Initialize authentication asynchronously."""
+        _LOGGER.debug("KlokkuDataUpdateCoordinator.async_initialize called")
+        auth_string = self.config_entry.data.get(CONF_ACCESS_TOKEN) or self.config_entry.data.get(CONF_USERNAME)
+        _LOGGER.debug(f"Auth string: '{auth_string}'")
+        _LOGGER.debug(f"Config entry data: {self.config_entry.data}")
+        authenticated = await self.api.authenticate(auth_string)
+        if not authenticated:
+            self._auth_failed = True
+            raise ConfigEntryAuthFailed("Failed to authenticate with Klokku API")
+
     async def _async_update_data(self) -> KlokkuData:
         """Fetch data from Klokku."""
         _LOGGER.debug("KlokkuDataUpdateCoordinator._async_update_data called")
+
+        if self._auth_failed:
+            raise UpdateFailed("Authentication failed during initialization")
 
         try:
             current_event, budgets = await asyncio.gather(

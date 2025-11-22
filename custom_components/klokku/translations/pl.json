@@ -4,6 +4,7 @@
       "already_configured": "Urządzenie jest już skonfigurowane"
     },
     "error": {
+      "missing_credentials": "Brakujące dane uwierzytelniania",
       "cannot_connect": "Nie udało się połączyć",
       "invalid_auth": "Nieprawidłowe uwierzytelnienie",
       "unknown": "Nieoczekiwany błąd"
@@ -12,7 +13,8 @@
       "user": {
         "data": {
           "url": "URL",
-          "username": "Nazwa użytkownika"
+          "username": "Nazwa użytkownika",
+          "access_token": "Token dostępu"
         },
         "description": "Wprowadź dane serwera Klokku"
       }

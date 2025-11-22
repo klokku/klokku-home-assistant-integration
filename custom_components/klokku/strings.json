@@ -4,7 +4,8 @@
       "user": {
         "data": {
           "url": "URL",
-          "username": "[%key:common::config_flow::data::username%]"
+          "username": "[%key:common::config_flow::data::username%]",
+          "access_token": "[%key:common::config_flow::data::access_token%]"
         },
         "description": "Enter your Klokku server details"
       }
@@ -12,6 +13,7 @@
     "error": {
       "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
       "invalid_auth": "[%key:common::config_flow::error::invalid_auth%]",
+      "missing_credentials": "[%key:common::config_flow::error::missing_credentials%]",
       "unknown": "[%key:common::config_flow::error::unknown%]"
     },
     "abort": {

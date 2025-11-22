@@ -37,7 +37,7 @@ class BudgetSelect(CoordinatorEntity[KlokkuDataUpdateCoordinator], SelectEntity)
         super().__init__(coordinator)
         self._attr_has_entity_name = True
         self._attr_translation_key = "budget"
-        self._attr_unique_id = f"{DOMAIN}_budget_select_{coordinator.api.user_uid}"
+        self._attr_unique_id = f"{DOMAIN}_budget_select_{coordinator.api.authenticated_user_uid}"
         self._attr_current_option = current_budget.name
         self._attr_options = [budget.name for budget in budgets]
 
