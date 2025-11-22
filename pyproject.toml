@@ -20,7 +20,7 @@ dependencies = [
 optional = true
 
 [tool.poetry.group.test.dependencies]
-pytest = "^8.4.2"
+pytest = "^9.0.1"
 pytest-asyncio = "^1.2.0"
 
 [tool.pytest.ini_options]
