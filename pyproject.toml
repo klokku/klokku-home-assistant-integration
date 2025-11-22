@@ -3,7 +3,7 @@ package-mode = false
 
 [project]
 name = "klokku-home-assistant-integration"
-version = "0.3.0"
+version = "0.4.0"
 description = "Home Assistant integration for Klokku"
 authors = [
     {name = "Mariusz Józala"}
@@ -13,7 +13,7 @@ readme = "README.md"
 requires-python = ">=3.13.2,<3.14"
 dependencies = [
     "homeassistant (>=2025.6.3)",
-    "klokku-python-client (==0.3.0)"
+    "klokku-python-client (==0.4.0)"
 ]
 
 [tool.poetry.group.test]

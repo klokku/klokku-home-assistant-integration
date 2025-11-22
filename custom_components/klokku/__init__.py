@@ -4,7 +4,13 @@ from __future__ import annotations
 
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryAuthFailed
+
 from .coordinator import KlokkuConfigEntry, KlokkuDataUpdateCoordinator
+
+import logging
+
+_LOGGER = logging.getLogger(__name__)
 
 _PLATFORMS: list[Platform] = [Platform.SELECT]
 
@@ -17,6 +23,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: KlokkuConfigEntry) -> bo
         hass,
         config_entry=entry,
     )
+
+    try:
+        await coordinator.async_initialize()
+    except ConfigEntryAuthFailed:
+        _LOGGER.error("Failed to authenticate with Klokku API")
+        return False
+
     await coordinator.async_config_entry_first_refresh()
 
     entry.runtime_data = coordinator

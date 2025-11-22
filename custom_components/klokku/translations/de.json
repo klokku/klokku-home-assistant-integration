@@ -4,6 +4,7 @@
       "already_configured": "Gerät ist bereits konfiguriert"
     },
     "error": {
+      "missing_credentials": "Fehlende Anmeldeinformationen",
       "cannot_connect": "Verbindung fehlgeschlagen",
       "invalid_auth": "Ungültige Authentifizierung",
       "unknown": "Unerwarteter Fehler"
@@ -12,7 +13,8 @@
       "user": {
         "data": {
           "url": "URL",
-          "username": "Benutzername"
+          "username": "Benutzername",
+          "access_token": "Zugriffstoken"
         },
         "description": "Geben Sie Ihre Klokku-Serverdetails ein"
       }

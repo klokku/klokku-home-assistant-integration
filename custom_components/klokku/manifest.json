@@ -9,8 +9,8 @@
   "documentation": "https://github.com/klokku/klokku-home-assistant-integration",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/klokku/klokku-home-assistant-integration/issues",
-  "requirements": ["klokku-python-client==0.3.0"],
+  "requirements": ["klokku-python-client==0.4.0"],
   "ssdp": [],
-  "version": "0.3.0",
+  "version": "0.4.0",
   "zeroconf": []
 }

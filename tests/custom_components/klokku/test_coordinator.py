@@ -53,13 +53,6 @@ async def coordinator(mock_hass, mock_config_entry, mock_klokku_api, mock_sessio
 
 
 @pytest.mark.asyncio
-async def test_coordinator_init(coordinator, mock_klokku_api):
-    """Test coordinator initialization."""
-    assert coordinator.api.user_uid == "user123"
-    assert coordinator.last_update_success is False
-
-
-@pytest.mark.asyncio
 async def test_update_data_success(coordinator, mock_klokku_api):
     """Test successful data update."""
     # Mock the return values

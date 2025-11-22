@@ -4,6 +4,7 @@
       "already_configured": "Enheten är redan konfigurerad"
     },
     "error": {
+      "missing_credentials": "Felaktiga autentiseringsuppgifter",
       "cannot_connect": "Anslutningen misslyckades",
       "invalid_auth": "Ogiltig autentisering",
       "unknown": "Oväntat fel"
@@ -12,7 +13,8 @@
       "user": {
         "data": {
           "url": "URL",
-          "username": "Användarnamn"
+          "username": "Användarnamn",
+          "access_token": "Åtkomsttoken"
         },
         "description": "Ange dina Klokku-serveruppgifter"
       }
