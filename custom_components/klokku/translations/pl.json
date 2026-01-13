@@ -22,8 +22,8 @@
   },
   "entity": {
     "select": {
-      "budget": {
-        "name": "Aktualny budżet"
+      "current_event": {
+        "name": "Aktualne wydarzenie"
       }
     }
   }
