@@ -13,7 +13,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
-from klokku_python_client import KlokkuApi, Budget, Event
+from klokku_python_client import KlokkuApi, CurrentEvent, WeeklyItem
 
 from .const import (
     DOMAIN as KLOKKU_DOMAIN, SCAN_INTERVAL_SEC,
@@ -27,8 +27,8 @@ type KlokkuConfigEntry = ConfigEntry[KlokkuDataUpdateCoordinator]
 @dataclass
 class KlokkuData:
     """Data for Klokku integration."""
-    current_event: Event | None
-    budgets: list[Budget]
+    current_event: CurrentEvent | None
+    weekly_items: list[WeeklyItem]
 
 class KlokkuDataUpdateCoordinator(DataUpdateCoordinator[KlokkuData]):
     """Class to manage fetching Klokku data."""
@@ -74,9 +74,9 @@ class KlokkuDataUpdateCoordinator(DataUpdateCoordinator[KlokkuData]):
             raise UpdateFailed("Authentication failed during initialization")
 
         try:
-            current_event, budgets = await asyncio.gather(
+            current_event, weekly_plan = await asyncio.gather(
                 self.api.get_current_event(),
-                self.api.get_all_budgets(),
+                self.api.get_current_week_plan(),
                 return_exceptions=True
             )
 
@@ -85,14 +85,14 @@ class KlokkuDataUpdateCoordinator(DataUpdateCoordinator[KlokkuData]):
                 _LOGGER.warning("Failed to fetch current event: %s", current_event)
                 current_event = None
 
-            if isinstance(budgets, Exception):
-                _LOGGER.error("Failed to fetch budgets: %s", budgets)
-                raise UpdateFailed(f"Failed to fetch budgets: {budgets}")
+            if isinstance(weekly_plan, Exception):
+                _LOGGER.error("Failed to fetch weekly plan: %s", weekly_plan)
+                raise UpdateFailed(f"Failed to fetch weekly plan: {weekly_plan}")
 
             _LOGGER.debug("Current event: %s", current_event)
-            _LOGGER.debug("Budgets: %s", budgets)
+            _LOGGER.debug("Weekly plan: %s", weekly_plan)
 
-            return KlokkuData(current_event, budgets)
+            return KlokkuData(current_event, weekly_plan.items)
 
         except Exception as err:
             _LOGGER.error("Error communicating with Klokku API: %s", err)

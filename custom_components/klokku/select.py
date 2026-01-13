@@ -1,4 +1,4 @@
-from klokku_python_client import Budget
+from klokku_python_client import CurrentEventPlanItem, WeeklyItem
 
 from . import KlokkuDataUpdateCoordinator
 from homeassistant.components.select import SelectEntity
@@ -20,46 +20,46 @@ async def async_setup_entry(
     """Set up the Klokku from config entry."""
     coordinator = config_entry.runtime_data
 
-    if coordinator.data.budgets is not None:
+    if coordinator.data.weekly_items is not None:
         async_add_entities([
-            BudgetSelect(coordinator, coordinator.data.budgets, coordinator.data.current_event.budget)
+            WeeklyItemSelect(coordinator, coordinator.data.weekly_items, coordinator.data.current_event.planItem)
         ])
 
 
-class BudgetSelect(CoordinatorEntity[KlokkuDataUpdateCoordinator], SelectEntity):
+class WeeklyItemSelect(CoordinatorEntity[KlokkuDataUpdateCoordinator], SelectEntity):
 
     def __init__(
             self,
             coordinator: KlokkuDataUpdateCoordinator,
-            budgets: list[Budget],
-            current_budget: Budget,
+            budget_items: list[WeeklyItem],
+            current_budget: CurrentEventPlanItem,
     ) -> None:
         super().__init__(coordinator)
         self._attr_has_entity_name = True
         self._attr_translation_key = "budget"
-        self._attr_unique_id = f"{DOMAIN}_budget_select_{coordinator.api.authenticated_user_uid}"
+        self._attr_unique_id = f"{DOMAIN}_budget_item_select_{coordinator.api.authenticated_user_uid}"
         self._attr_current_option = current_budget.name
-        self._attr_options = [budget.name for budget in budgets]
+        self._attr_options = [item.name for item in budget_items]
 
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
         _LOGGER.debug("Updating select")
-        self._attr_current_option = self.coordinator.data.current_event.budget.name
-        self._attr_options = [budget.name for budget in self.coordinator.data.budgets]
+        self._attr_current_option = self.coordinator.data.current_event.planItem.name
+        self._attr_options = [item.name for item in self.coordinator.data.weekly_items]
         self.async_write_ha_state()
 
     async def async_select_option(self, option: str) -> None:
         """Change the selected option."""
 
-        _LOGGER.debug("Changing budget to: %s", option)
+        _LOGGER.debug("Changing current weekly item to: %s", option)
 
-        budget_id = next((budget.id for budget in self.coordinator.data.budgets if budget.name == option), None)
+        budget_item_id = next((item.budget_item_id for item in self.coordinator.data.weekly_items if item.name == option), None)
 
-        if budget_id is None:
-            _LOGGER.error("No matching budget found for option: %s", option)
+        if budget_item_id is None:
+            _LOGGER.error("No matching weekly item found for option: %s", option)
             return
 
-        _LOGGER.debug("Budget ID: %s", budget_id)
-        await self.coordinator.api.set_current_budget(budget_id)
+        _LOGGER.debug("Budget Item ID: %s", budget_item_id)
+        await self.coordinator.api.set_current_event(budget_item_id)
         await self.coordinator.async_request_refresh()

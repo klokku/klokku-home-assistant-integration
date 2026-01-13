@@ -1804,14 +1804,14 @@ docs = ["sphinx (>=4.3.0)", "sphinx-rtd-theme (>=1.0)"]
 
 [[package]]
 name = "klokku-python-client"
-version = "0.4.0"
+version = "0.5.1"
 description = "Klokku REST API client"
 optional = false
 python-versions = ">=3.13"
 groups = ["main"]
 files = [
-    {file = "klokku_python_client-0.4.0-py3-none-any.whl", hash = "sha256:8f6f0305da916248532f709913c33455f5b474d3fb6fa006b9d4671c2074520f"},
-    {file = "klokku_python_client-0.4.0.tar.gz", hash = "sha256:3e79ec4d8f281aae067eaf95292a06d6205494e758fb754a1769c54d35cd3af5"},
+    {file = "klokku_python_client-0.5.1-py3-none-any.whl", hash = "sha256:b3ba6af635067f94e81dcc0d921a9b4496965c4ad0e71147126c903dbbca15ec"},
+    {file = "klokku_python_client-0.5.1.tar.gz", hash = "sha256:4e768c59100a8d38216075c093c28bd0615abbc9149fb03f5e8599f2e445b938"},
 ]
 
 [package.dependencies]
@@ -4066,4 +4066,4 @@ ifaddr = ">=0.1.7"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13.2,<3.14"
-content-hash = "7c7e93416d8704c7cabb5261fbf4c5a4e6f369f7465ca57c6ec12825bd5c29a3"
+content-hash = "1bc9ab93133da9585ac973472bc7032436902011ee561b99c09bf852331048db"
