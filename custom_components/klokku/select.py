@@ -31,15 +31,15 @@ class WeeklyItemSelect(CoordinatorEntity[KlokkuDataUpdateCoordinator], SelectEnt
     def __init__(
             self,
             coordinator: KlokkuDataUpdateCoordinator,
-            budget_items: list[WeeklyItem],
-            current_budget: CurrentEventPlanItem,
+            weekly_items: list[WeeklyItem],
+            current_event: CurrentEventPlanItem,
     ) -> None:
         super().__init__(coordinator)
         self._attr_has_entity_name = True
-        self._attr_translation_key = "budget"
-        self._attr_unique_id = f"{DOMAIN}_budget_item_select_{coordinator.api.authenticated_user_uid}"
-        self._attr_current_option = current_budget.name
-        self._attr_options = [item.name for item in budget_items]
+        self._attr_translation_key = "current_event"
+        self._attr_unique_id = f"{DOMAIN}_current_event_select_{coordinator.api.authenticated_user_uid}"
+        self._attr_current_option = current_event.name
+        self._attr_options = [item.name for item in weekly_items]
 
     @callback
     def _handle_coordinator_update(self) -> None:
@@ -54,7 +54,7 @@ class WeeklyItemSelect(CoordinatorEntity[KlokkuDataUpdateCoordinator], SelectEnt
 
         _LOGGER.debug("Changing current weekly item to: %s", option)
 
-        budget_item_id = next((item.budget_item_id for item in self.coordinator.data.weekly_items if item.name == option), None)
+        budget_item_id = next((item.budgetItemId for item in self.coordinator.data.weekly_items if item.name == option), None)
 
         if budget_item_id is None:
             _LOGGER.error("No matching weekly item found for option: %s", option)
