@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from klokku_python_client import Budget
+from klokku_python_client import WeeklyItem
 
 from .const import DOMAIN
 from .coordinator import KlokkuDataUpdateCoordinator
@@ -18,12 +18,12 @@ class KlokkuBaseEntity(CoordinatorEntity[KlokkuDataUpdateCoordinator]):
     def __init__(
         self,
         coordinator: KlokkuDataUpdateCoordinator,
-        budgets: list[Budget],
+        weekly_items: list[WeeklyItem],
     ) -> None:
         """Initialize entity."""
         super().__init__(coordinator)
 
-        self.budgets = budgets
+        self.weekly_items = weekly_items
 
         self._attr_device_info = DeviceInfo(
             identifiers={DOMAIN},

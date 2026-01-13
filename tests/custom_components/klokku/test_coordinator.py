@@ -37,7 +37,7 @@ def mock_klokku_api():
     with patch("custom_components.klokku.coordinator.KlokkuApi") as mock_api_class:
         mock_api = mock_api_class.return_value
         mock_api.get_current_event = AsyncMock()
-        mock_api.get_all_budgets = AsyncMock()
+        mock_api.get_current_week_plan = AsyncMock()
         yield mock_api
 
 
@@ -57,10 +57,11 @@ async def test_update_data_success(coordinator, mock_klokku_api):
     """Test successful data update."""
     # Mock the return values
     mock_event = MagicMock()
-    mock_budgets = [MagicMock(), MagicMock()]
+    mock_week_plan = MagicMock()
+    mock_week_plan.items = [MagicMock(), MagicMock()]
 
     mock_klokku_api.get_current_event.return_value = mock_event
-    mock_klokku_api.get_all_budgets.return_value = mock_budgets
+    mock_klokku_api.get_current_week_plan.return_value = mock_week_plan
 
     # Call the method
     result = await coordinator._async_update_data()
@@ -68,11 +69,11 @@ async def test_update_data_success(coordinator, mock_klokku_api):
     # Verify the result
     assert isinstance(result, KlokkuData)
     assert result.current_event == mock_event
-    assert result.budgets == mock_budgets
+    assert result.weekly_items == mock_week_plan.items
 
     # Verify the API calls
     mock_klokku_api.get_current_event.assert_called_once()
-    mock_klokku_api.get_all_budgets.assert_called_once()
+    mock_klokku_api.get_current_week_plan.assert_called_once()
 
 
 @pytest.mark.asyncio
@@ -80,10 +81,11 @@ async def test_update_data_event_exception(coordinator, mock_klokku_api):
     """Test handling of exception from get_current_event."""
     # Mock the return values
     mock_event_exception = Exception("Event error")
-    mock_budgets = [MagicMock(), MagicMock()]
+    mock_week_plan = MagicMock()
+    mock_week_plan.items = [MagicMock(), MagicMock()]
 
     mock_klokku_api.get_current_event.return_value = mock_event_exception
-    mock_klokku_api.get_all_budgets.return_value = mock_budgets
+    mock_klokku_api.get_current_week_plan.return_value = mock_week_plan
 
     # Call the method
     result = await coordinator._async_update_data()
@@ -91,25 +93,25 @@ async def test_update_data_event_exception(coordinator, mock_klokku_api):
     # Verify the result
     assert isinstance(result, KlokkuData)
     assert result.current_event is None
-    assert result.budgets == mock_budgets
+    assert result.weekly_items == mock_week_plan.items
 
 
 @pytest.mark.asyncio
-async def test_update_data_budgets_exception(coordinator, mock_klokku_api):
-    """Test handling of exception from get_all_budgets."""
+async def test_update_data_weekly_items_exception(coordinator, mock_klokku_api):
+    """Test handling of exception from get_current_week_plan."""
     # Mock the return values
     mock_event = MagicMock()
-    mock_budgets_exception = Exception("Budgets error")
+    mock_weekly_plan_exception = Exception("Budgets error")
 
     mock_klokku_api.get_current_event.return_value = mock_event
-    mock_klokku_api.get_all_budgets.return_value = mock_budgets_exception
+    mock_klokku_api.get_current_week_plan.return_value = mock_weekly_plan_exception
 
     # Call the method and expect an exception
     with pytest.raises(UpdateFailed) as excinfo:
         await coordinator._async_update_data()
 
     # Verify the exception message
-    assert "Failed to fetch budgets" in str(excinfo.value)
+    assert "Failed to fetch weekly plan" in str(excinfo.value)
 
 
 @pytest.mark.asyncio
@@ -117,7 +119,7 @@ async def test_update_data_general_exception(coordinator, mock_klokku_api):
     """Test handling of general exceptions."""
     # Mock the API to raise an exception
     mock_klokku_api.get_current_event.side_effect = Exception("General error")
-    mock_klokku_api.get_all_budgets.side_effect = Exception("General error")
+    mock_klokku_api.get_current_week_plan.side_effect = Exception("General error")
 
     # Call the method and expect an exception
     with pytest.raises(UpdateFailed) as excinfo:
